@@ -10,7 +10,9 @@
     "@types/node": "^16.18.96",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
+    "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "image-to-base64": "^2.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
@@ -43,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@types/bootstrap": "^5.2.10"
+    "@types/bootstrap": "^5.2.10",
+    "@types/image-to-base64": "^2.1.2"
   }
 }

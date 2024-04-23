@@ -14,3 +14,84 @@ body {
   margin-right: auto;
   margin-top: 4vh;
 }
+
+.image-content{
+  width: 100%;
+  cursor: pointer;
+}
+
+.image-all{
+  position: relative;
+  display: grid;
+  align-items: center;
+  margin: 0 0.5vw;
+}
+
+.title-image{
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  font-weight: bold;
+  margin : 0 12px;
+  font-size: 30px;
+  align-items: center;
+  width: calc(100% - 24px);
+  text-align: center;
+  z-index: -1;
+  transition: 0.1s ease;
+  height: 100%;
+  display: grid;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.image-content:hover + .title-image{
+  z-index: 1;
+  cursor: pointer;
+}
+
+.title-image:hover{
+  z-index: 1;
+  cursor: pointer;
+}
+
+.radio-images{
+  display: none;
+}
+
+.image-description-image{
+  margin: 0 auto;
+  display: grid;
+  align-items: center;
+}
+
+.image-description{
+  color: white;
+}
+
+.image-description p {
+  padding-right:1vw;
+}
+
+.row-description{
+  background-color: #2f2f2f;
+  padding: 4vh 0;
+  margin-bottom: 8vh;
+  border-radius: 14px;
+}
+
+.row-images{
+  background-color: #2f2f2f;
+  padding: 1vh 2vw;
+  margin-bottom: 4vh;
+  border-radius: 14px;
+}
+
+.spinner-row{
+  height: 10rem;
+  width: 10rem;
+}
+
+.centered{
+  margin: 0 auto;
+}
