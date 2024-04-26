@@ -2,16 +2,15 @@ import React from 'react';
 import './App.css';
 import NavBarPr from "./Components/Navbar";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Banner from "./Components/Banner";
-import ImageContainer from "./Components/ImageContainer";
+import {router} from "./Routes/Routes";
+import { RouterProvider } from 'react-router-dom';
 
 
 function App() {
   return (
     <div className="App">
       <NavBarPr />
-        <Banner />
-        <ImageContainer />
+        <RouterProvider router={router} />
     </div>
   );
 }
