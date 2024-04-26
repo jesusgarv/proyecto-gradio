@@ -1,65 +1,129 @@
 import Container from "react-bootstrap/Container";
-import {Col, Form, Row} from "react-bootstrap";
+import {Alert, Col, Form, Row} from "react-bootstrap";
 import "./GalleryOptions.css";
 import {Button} from "react-bootstrap";
 import React, {useState} from "react";
+import axios from "axios";
 
 type ImageProps = {
     "image" : string | File;
     "titulo" : string;
     "desc" : string;
 }
-function GalleryOptions(){
 
-    const [imagenes , setImagenes] = useState(Array<ImageProps>);
+class BreakException extends Error {
+    constructor(msg: string) {
+        super();
+        Object.setPrototypeOf(this, BreakException.prototype);
+        this.message = msg;
+    }
+
+    errorEmptyValues(){
+        return "Error: Hay campos vacios en su formulario"
+    }
+
+    getErrorMessage(){
+        return this.message;
+    }
+}
+
+function GalleryOptions() {
+
+    const [imagenes, setImagenes] = useState(Array<ImageProps>);
     const [nombreGaleria, setNombreGalerias] = useState("");
     const [descripcion, setDescripcion] = useState("");
+    const [isCorrect, setIsCorrect] = useState(true);
+    const [messageStatus, setMessageStatus] = useState(Array<string>);
 
     const agregarImagenes = () => {
-        const newElement : ImageProps = {
-            "image" : "",
+        const newElement: ImageProps = {
+            "image": "",
             "titulo": "",
-            "desc" : ""
+            "desc": ""
         }
         setImagenes(imagenes => [...imagenes, newElement]);
     }
 
-    const handleChangeImage = (index :number, image: File) => {
+    const handleChangeImage = (index: number, image: File) => {
         let newState = imagenes.slice();
         newState[index]["image"] = image;
         setImagenes(newState);
     }
 
-    const handleChangeTitle = (index :number, title:string) =>{
+    const handleChangeTitle = (index: number, title: string) => {
         let newState = imagenes.slice();
         newState[index].titulo = title;
         setImagenes(newState);
     }
 
-    const handleChangeDesc = (index :number, desc:string) =>{
+    const handleChangeDesc = (index: number, desc: string) => {
         let newState = imagenes.slice();
         newState[index].desc = desc;
         setImagenes(newState);
     }
 
-    const handleChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        if(name==="nombre_galeria")
+        if (name === "nombre_galeria")
             setNombreGalerias(value);
         else
             setDescripcion(value);
     }
 
-    const handleSubmit = (event : any) =>{
+    const handleSubmit = (event : React.FormEvent<HTMLElement>) =>{
         event.preventDefault();
+        const host = "http://192.168.100.11:5000";
+        setIsCorrect(true);
 
+        const titulos : Array<String> = [];
+        const desc : Array<String> = [];
+        const images : Array<string|File> = [];
+        try {
+            if (nombreGaleria === "" || descripcion === "")
+                throw new BreakException("Error: Nombre o descripcion vacios");
+
+            if (imagenes.length === 0)
+                throw new BreakException("Error: Debe agregar imagenes");
+
+            imagenes.forEach((value, index) => {
+                if (!(value.titulo !== "" && value.image !== "")) {
+                    setIsCorrect(false);
+                    throw new BreakException("Error: Titulo de la imagen e imagen deben tener un valor");
+                } else {
+                    titulos.push(value.titulo);
+                    desc.push(value.desc);
+                    images.push(value.image);
+                }
+            });
+
+            const formData = new FormData();
+            formData.append("galeria", nombreGaleria);
+            formData.append("descripcion", descripcion);
+            formData.append("titulos", JSON.stringify(titulos));
+            formData.append("descripciones_extra", JSON.stringify(desc));
+            formData.append("imagenes", JSON.stringify(images));
+
+            axios.put(`${host}/create_gallery`,formData, {
+                headers: {
+                    'content-type': `multipart/form-data;`,
+                }
+            }).then((response) => {
+                console.log(response);
+                setIsCorrect(false);
+                setMessageStatus([response.data["statusCode"] === 200 ? "success" : "danger",response.data['message']]);
+            });
+        }catch(e){
+            setIsCorrect(false)
+            if(e instanceof BreakException)
+                setMessageStatus(["danger",e.getErrorMessage()]);
+        }
     }
 
     return(
         <>
             <Container>
                 <Form className="create-gallery mt-4 mb-5">
-                    <Form.Group className="mb-3" id="formUploadGallery" onSubmit={event => handleSubmit(event)}>
+                    <Form.Group className="mb-3" id="formUploadGallery" onSubmit={(event)=>handleSubmit(event)}>
                         <Row>
                             <Col xs={6}>
                                 <Form.Label htmlFor="nombre_galeria">Nombre de la galeria:</Form.Label>
@@ -84,9 +148,16 @@ function GalleryOptions(){
                                 <Button className="m-lg-4" onClick={agregarImagenes} type="button">Agregar imagenes</Button>
                             </Col>
                             <Col xs={6}>
-                                <Button variant="success" type="submit" className="mt-md-4" size="lg">
+                                <Button
+                                    variant="success"
+                                    type="submit"
+                                    className="mt-md-4"
+                                    size="lg"
+                                    onClick={e=> handleSubmit(e)}
+                                >
                                     Enviar
                                 </Button>
+                                {!isCorrect ? <Alert variant={messageStatus[0]} className="mt-4">{messageStatus[1]}</Alert> : null}
                             </Col>
                         </Row>
                         <Imagenes

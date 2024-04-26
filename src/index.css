@@ -8,6 +8,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.nav-links{
+  color: white!important;
+  text-decoration: none!important;
+}
+
 .background-turquesa{
   background-color: #6e3132;
 }
