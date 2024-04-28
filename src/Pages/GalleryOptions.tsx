@@ -6,7 +6,7 @@ import React, {useState} from "react";
 import axios from "axios";
 
 type ImageProps = {
-    "image" : string | File;
+    "image" : string;
     "titulo" : string;
     "desc" : string;
 }
@@ -16,10 +16,6 @@ class BreakException extends Error {
         super();
         Object.setPrototypeOf(this, BreakException.prototype);
         this.message = msg;
-    }
-
-    errorEmptyValues(){
-        return "Error: Hay campos vacios en su formulario"
     }
 
     getErrorMessage(){
@@ -44,7 +40,7 @@ function GalleryOptions() {
         setImagenes(imagenes => [...imagenes, newElement]);
     }
 
-    const handleChangeImage = (index: number, image: File) => {
+    const handleChangeImage = (index: number, image: string) => {
         let newState = imagenes.slice();
         newState[index]["image"] = image;
         setImagenes(newState);
@@ -103,11 +99,7 @@ function GalleryOptions() {
             formData.append("descripciones_extra", JSON.stringify(desc));
             formData.append("imagenes", JSON.stringify(images));
 
-            axios.put(`${host}/create_gallery`,formData, {
-                headers: {
-                    'content-type': `multipart/form-data;`,
-                }
-            }).then((response) => {
+            axios.put(`${host}/create_gallery`,formData).then((response) => {
                 console.log(response);
                 setIsCorrect(false);
                 setMessageStatus([response.data["statusCode"] === 200 ? "success" : "danger",response.data['message']]);
@@ -193,10 +185,18 @@ function Imagenes(props: ImagesType){
             props.handleChangeDesc(parseInt(name.split("_")[1]),value);
         else{
             const {files} = e.target;
-            const fileUpdated = files === null ? "" : files.item(0);
-            props.handleChangeImage(parseInt(name.split("_")[1]), fileUpdated);
+            if(files !== null)
+                getBase64(files[0], parseInt(name.split("_")[1]), props.handleChangeImage);
         }
 
+    }
+
+    const getBase64 = (file : globalThis.Blob, index: number, cb : Function) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            cb(index, reader.result);
+        }
     }
 
     return(
