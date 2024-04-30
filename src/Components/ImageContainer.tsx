@@ -4,6 +4,7 @@ import axios from "axios";
 import React from "react";
 import LoaderRow from "./LoaderRow";
 import {gallery} from "../Types/image_gallery";
+import host from "../../hosts";
 
 
 function ImageContainer(props : gallery) {
@@ -22,7 +23,7 @@ function ImageContainer(props : gallery) {
         // @ts-ignore
         formData.append("image", base64);
 
-        axios.post("http://localhost:5000/image",formData).then(response=> {
+        axios.post(host + "/image",formData).then(response=> {
             setImageEcualized(response.data["imagen_ecualizada"]);
             setImageInverted(response.data["imagen_invertida"]);
             setImageGamma(response.data["imagen_gamma"]);

@@ -3,6 +3,7 @@ import {gallery} from "../Types/image_gallery";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import {Button, Col, Image, Modal, Row} from "react-bootstrap";
+import host from "../../hosts";
 
 export default function DeleteGallery(){
 
@@ -13,7 +14,7 @@ export default function DeleteGallery(){
     const [galleries, setGalleries] = React.useState(Array<gallery>);
 
     const fetchGalleries = ()=>{
-        axios.get('http://localhost:5000/get_galleries').then(response=>{
+        axios.get(host+'/get_galleries').then(response=>{
             setGalleries(response.data['data']);
         });
     }
@@ -23,7 +24,7 @@ export default function DeleteGallery(){
         const formData = new FormData();
         formData.append("idgallery", index.toString());
 
-        axios.post('http://localhost:5000/delete_gallery', formData).then(response => {
+        axios.post(host + '/delete_gallery', formData).then(response => {
             setGalleries(response.data['data']);
         })
     }
