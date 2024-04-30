@@ -64,6 +64,11 @@ body {
   cursor: pointer;
 }
 
+.header-gallery{
+  color: white;
+  text-align: center;
+}
+
 .radio-images{
   display: none;
 }
@@ -72,6 +77,7 @@ body {
   margin: 0 auto;
   display: grid;
   align-items: center;
+  width: 100%;
 }
 
 .image-description{
@@ -83,14 +89,14 @@ body {
 }
 
 .row-description{
-  background-color: #d13b6f;
+  background-color: #dbb27a;
   padding: 4vh 0;
   margin-bottom: 8vh;
   border-radius: 14px;
 }
 
 .row-images{
-  background-color: #d13b6f;
+  background-color: #dbb27a;
   padding: 1vh 2vw;
   margin-bottom: 4vh;
   border-radius: 14px;

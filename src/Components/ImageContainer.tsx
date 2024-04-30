@@ -56,8 +56,11 @@ function ImageContainer(props : gallery) {
 
     return(
         <>
-            <Container>
-                <Row className="mt-5 row-images">
+            <Container className="row-images mt-5">
+                <Row className="justify-content-center">
+                    <h3 className="header-gallery mt-3">{props.name_gallery}</h3>
+                </Row>
+                <Row className="mt-5">
                     {props.images.map((obj, index)=>
                         <ImageComponent image_name={obj.image_name}
                                         image={obj.image}
@@ -68,6 +71,7 @@ function ImageContainer(props : gallery) {
                     )}
                 </Row>
                 {isReady ? (selected !== -1 ? <ImageDescription
+                    gallery_description={props.gallery_description}
                     image_description={props.images[selected].image_description}
                     image={image64}
                     image_name={props.images[selected].image_name}
@@ -99,6 +103,7 @@ class ImageComponent extends React.Component<ImageProps, any>{
 }
 
 type imageDescriptionProps = {
+    gallery_description : string;
     image_description: string;
     image : string;
     image_name : string;
@@ -114,6 +119,9 @@ class ImageDescription extends React.Component<imageDescriptionProps, any>{
                     </Col>
                     <Col xs={4} className="image-description">
                         <h2>{this.props.image_name}</h2>
+                        <p>
+                            {this.props.gallery_description}
+                        </p>
                         <p>
                             {this.props.image_description}
                         </p>
