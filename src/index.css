@@ -11,6 +11,7 @@ body {
 .nav-links{
   color: white!important;
   text-decoration: none!important;
+  margin-right: 2vh;
 }
 
 .background-turquesa{
@@ -22,11 +23,24 @@ body {
   margin-left: auto;
   margin-right: auto;
   margin-top: 4vh;
+  color:white!important;
+  background-color: #6e3132!important;
 }
 
 .image-content{
   width: 100%;
   cursor: pointer;
+}
+
+.row-axis {
+  padding-bottom: 2vh;
+  overflow-x: auto!important;
+  flex-wrap: nowrap!important;
+}
+
+.col-row {
+  display: inline-block!important;
+  float: none;
 }
 
 .image-all{
@@ -91,8 +105,12 @@ body {
 .row-description{
   background-color: #dbb27a;
   padding: 4vh 0;
-  margin-bottom: 8vh;
   border-radius: 14px;
+}
+
+.descriptions-section{
+  padding-left: 2vw;
+  margin-bottom: 2vh;
 }
 
 .row-images{

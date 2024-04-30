@@ -1,20 +1,8 @@
 import React, {useEffect} from "react";
 import axios from "axios";
 import ImageContainer from "../Components/ImageContainer";
-
-type image_gallery = {
-    idimage : number;
-    image_name : string;
-    image_description : string;
-    image : string;
-}
-
-type gallery = {
-    idgallery : number;
-    name_gallery : string;
-    gallery_description : string;
-    images: Array<image_gallery>;
-}
+import {gallery} from "../Types/image_gallery";
+import Container from "react-bootstrap/Container";
 
 export default function Principal() {
     useEffect(()=>{
@@ -24,7 +12,7 @@ export default function Principal() {
     const [galleries, setGalleries] = React.useState(Array<gallery>);
 
     const fetchGalleries = ()=>{
-        axios.get('http://192.168.100.11:5000/get_galleries').then(response=>{
+        axios.get('http://localhost:5000/get_galleries').then(response=>{
             setGalleries(response.data['data']);
         });
     }
@@ -40,6 +28,7 @@ export default function Principal() {
                     key={index}
                 />
             })}
+            {galleries.length === 0 ? <Container className="mt-5" style={{color:"white"}}><h2>Aún no hay galerias registradas</h2></Container> : <></>}
         </>
     )
 }

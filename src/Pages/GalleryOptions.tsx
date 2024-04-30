@@ -44,6 +44,7 @@ function GalleryOptions() {
         let newState = imagenes.slice();
         newState[index]["image"] = image;
         setImagenes(newState);
+        console.log(imagenes)
     }
 
     const handleChangeTitle = (index: number, title: string) => {
@@ -68,12 +69,12 @@ function GalleryOptions() {
 
     const handleSubmit = (event : React.FormEvent<HTMLElement>) =>{
         event.preventDefault();
-        const host = "http://192.168.100.11:5000";
+        const host = "http://localhost:5000";
         setIsCorrect(true);
 
         const titulos : Array<String> = [];
         const desc : Array<String> = [];
-        const images : Array<string|File> = [];
+        const images : Array<string> = [];
         try {
             if (nombreGaleria === "" || descripcion === "")
                 throw new BreakException("Error: Nombre o descripcion vacios");
@@ -81,7 +82,7 @@ function GalleryOptions() {
             if (imagenes.length === 0)
                 throw new BreakException("Error: Debe agregar imagenes");
 
-            imagenes.forEach((value, index) => {
+            imagenes.forEach((value) => {
                 if (!(value.titulo !== "" && value.image !== "")) {
                     setIsCorrect(false);
                     throw new BreakException("Error: Titulo de la imagen e imagen deben tener un valor");
@@ -100,7 +101,6 @@ function GalleryOptions() {
             formData.append("imagenes", JSON.stringify(images));
 
             axios.put(`${host}/create_gallery`,formData).then((response) => {
-                console.log(response);
                 setIsCorrect(false);
                 setMessageStatus([response.data["statusCode"] === 200 ? "success" : "danger",response.data['message']]);
             });
