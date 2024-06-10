@@ -4,7 +4,7 @@ import "./GalleryOptions.css";
 import {Button} from "react-bootstrap";
 import React, {useState} from "react";
 import axios from "axios";
-import hosts from "../../hosts";
+import host from "../utils/hosts";
 
 type ImageProps = {
     "image" : string;
@@ -70,7 +70,6 @@ function GalleryOptions() {
 
     const handleSubmit = (event : React.FormEvent<HTMLElement>) =>{
         event.preventDefault();
-        const host = hosts + ":5000";
         setIsCorrect(true);
 
         const titulos : Array<String> = [];

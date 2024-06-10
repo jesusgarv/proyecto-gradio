@@ -1,5 +1,4 @@
 export  interface image_gallery {
-    idimage : number;
     image_name : string;
     image_description : string;
     image : string;

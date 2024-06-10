@@ -3,6 +3,7 @@ import axios from "axios";
 import ImageContainer from "../Components/ImageContainer";
 import {gallery} from "../Types/image_gallery";
 import Container from "react-bootstrap/Container";
+import host from "../utils/hosts";
 
 export default function Principal() {
     useEffect(()=>{
@@ -12,7 +13,7 @@ export default function Principal() {
     const [galleries, setGalleries] = React.useState(Array<gallery>);
 
     const fetchGalleries = ()=>{
-        axios.get('http://localhost:5000/get_galleries').then(response=>{
+        axios.get(`${host}/get_galleries`).then(response=>{
             setGalleries(response.data['data']);
         });
     }

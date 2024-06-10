@@ -3,7 +3,7 @@ import {gallery} from "../Types/image_gallery";
 import axios from "axios";
 import Container from "react-bootstrap/Container";
 import {Button, Col, Image, Modal, Row} from "react-bootstrap";
-import host from "../../hosts";
+import host from "../utils/hosts";
 
 export default function DeleteGallery(){
 
@@ -107,7 +107,7 @@ class ImageComponent extends React.Component<ImageProps, any>{
         return(
             <>
                 <Col xs={3} className="image-all col-row">
-                    <Image src={this.props.image} className="image-content"/>
+                    <Image src={`${host}${this.props.image}`} className="image-content"/>
                     <div className="title-image">{this.props.image_name}</div>
                 </Col>
             </>

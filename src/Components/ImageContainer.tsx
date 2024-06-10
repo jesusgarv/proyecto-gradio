@@ -4,7 +4,7 @@ import axios from "axios";
 import React from "react";
 import LoaderRow from "./LoaderRow";
 import {gallery} from "../Types/image_gallery";
-import host from "../../hosts";
+import host from "../utils/hosts";
 
 
 function ImageContainer(props : gallery) {
@@ -14,10 +14,12 @@ function ImageContainer(props : gallery) {
     const [imageInverted, setImageInverted] = React.useState("");
     const [imageGamma, setImageGamma] = React.useState("");
 
-    const selectInput = async (event: React.MouseEvent<HTMLDivElement>, index : number)=>{
+    const selectInput = async (index : number)=>{
         setSelected(index);
         setIsReady(false);
-        const base64 = await blobToData(props.images[index].image);
+        const base64 = await blobToData(`${host}${props.images[index].image}`);
+
+        console.log(base64);
 
         const formData = new FormData();
         // @ts-ignore
@@ -80,7 +82,7 @@ type ImageProps = {
     "image_name" : string;
     "image" : string;
     "index" : number;
-    "selectInput" : (event : React.MouseEvent<HTMLDivElement>,index: number) => void;
+    "selectInput" : (index: number) => void;
 }
 
 class ImageComponent extends React.Component<ImageProps, any>{
@@ -89,8 +91,8 @@ class ImageComponent extends React.Component<ImageProps, any>{
         return(
             <>
                 <Col xs={3} className="image-all col-row">
-                    <Image src={this.props.image} className="image-content"/>
-                    <div className="title-image" onClick={(e) => this.props.selectInput(e,this.props.index)}>{this.props.image_name}</div>
+                    <Image src={`${host}${this.props.image}`} className="image-content"/>
+                    <div className="title-image" onClick={(e) => this.props.selectInput(this.props.index)}>{this.props.image_name}</div>
                 </Col>
             </>
         );
